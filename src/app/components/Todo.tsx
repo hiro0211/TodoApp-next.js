@@ -2,7 +2,7 @@
 
 import { Task } from "@/types";
 import React, { useEffect, useRef, useState } from "react";
-import { deleteTodo, editTodo } from "../api";
+import { deleteTodo, updateTodo } from "../api";
 
 interface TodoProps {
   todo: Task;
@@ -25,7 +25,7 @@ const Todo = ({ todo }: TodoProps) => {
   };
 
   const handleSave = async () => {
-    await editTodo(todo.id, editedTaskText);
+    await updateTodo(todo.id, editedTaskText);
     setIsEditing(false);
   };
   const handleDelete = async () => {
