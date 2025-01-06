@@ -3,14 +3,17 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { addTodo } from "../api";
 import { v4 as uuidv4 } from "uuid";
+import { useRouter } from "next/navigation";
 
 const AddTask = () => {
+  const router = useRouter();
   const [taskTitle, setTaskTitle] = useState<string>("");
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     await addTodo({ id: uuidv4(), text: taskTitle });
     setTaskTitle("");
+    router.refresh();
   };
 
   return (

@@ -1,6 +1,5 @@
 import { Task } from "@/types";
 
-
 const baseUrl = "http://localhost:3001";
 
 export const getAllTodos = async (): Promise<Task[]> => {

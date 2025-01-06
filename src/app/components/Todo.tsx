@@ -2,13 +2,15 @@
 
 import { Task } from "@/types";
 import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { deleteTodo, updateTodo } from "../api";
 
 interface TodoProps {
   todo: Task;
 }
 
-const Todo = ({ todo }: TodoProps) => {
+export const Todo = ({ todo }: TodoProps) => {
+  const router = useRouter();
   const ref = useRef<HTMLInputElement>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTaskText, setEditedTaskText] = useState(todo.text);
@@ -17,8 +19,7 @@ const Todo = ({ todo }: TodoProps) => {
     if (isEditing) {
       ref.current?.focus();
     }
-  }
-  , [isEditing]);
+  }, [isEditing]);
 
   const handleEdit = async () => {
     setIsEditing(true);
@@ -27,10 +28,12 @@ const Todo = ({ todo }: TodoProps) => {
   const handleSave = async () => {
     await updateTodo(todo.id, editedTaskText);
     setIsEditing(false);
+    router.refresh();
   };
   const handleDelete = async () => {
     await deleteTodo(todo.id);
-  }
+    router.refresh();
+  };
 
   return (
     <li
@@ -50,7 +53,6 @@ const Todo = ({ todo }: TodoProps) => {
       ) : (
         <span className="text-gray-700">{todo.text}</span>
       )}
-      <span className="text-gray-700">{todo.text}</span>
       <div className="flex space-x-2">
         {isEditing ? (
           <button
@@ -67,7 +69,12 @@ const Todo = ({ todo }: TodoProps) => {
             編集
           </button>
         )}
-        <button className="text-red-500 hover:text-red-700" onClick={handleDelete}>削除</button>
+        <button
+          className="text-red-500 hover:text-red-700"
+          onClick={handleDelete}
+        >
+          削除
+        </button>
       </div>
     </li>
   );
